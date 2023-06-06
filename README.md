@@ -1,10 +1,11 @@
+
 # Location Worker (Ship Tracking)
 
-Esse projeto é um sistema de backend para lidar com as informações de localizações de cargas recebidas por dispositivos IoT e suas respectivas ordens. Faz parte de um sistema mais completo de contratos inteligentes que gerenciam o rastreamento de cargas atráves desses dispositivos.
+This project is a backend system to deal with load location information received by IoT devices and their respective orders. It is part of a more complete system of smart contracts that manage cargo tracking through these devices.
 
-O código para o sistema IoT pode ser encontrado em: 
+[IoT Code](https://github.com/JoaoCarlosRosaJunior/ship-track-IoT) 
 
-## Stack utilizada
+## Stack
 
 **Back-end:** Node, Express e Typescript
 
@@ -13,3 +14,4 @@ O código para o sistema IoT pode ser encontrado em:
 **Deployment**: Flyio
 
 **Database Hosting**: PlaneScale
+
