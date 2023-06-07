@@ -5,16 +5,58 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL")
+// }
+
+
+// model Location {
+//   id        Int      @id @default(autoincrement())
+//   latitude  Float
+//   longitude Float
+//   created_at DateTime @default(now())
+//   deviceId  Int
+// }
+
+// Define the database connection details
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
+// Define the `device` table
+model Device {
+  id         Int      @id @default(autoincrement())
+  available  Boolean
+  createdAt  DateTime @default(now())
+  orders     Order[]
+  locations  Location[]
+}
 
+// Define the `order` table
+model Order {
+  id             String      @id
+  deviceId       Int
+  senderWallet   String
+  receiverWallet String
+  senderAddress  String
+  receiverAddress String
+  expectedTime   DateTime
+  delivered      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  device         Device   @relation(fields: [deviceId], references: [id])
+  location       Location[]
+}
+
+// Define the `location` table
 model Location {
-  id        Int      @id @default(autoincrement())
-  latitude  Float
-  longitude Float
-  created_at DateTime @default(now())
-  deviceId  Int
+  id         Int      @id
+  deviceId   Int
+  orderId    String
+  latitude   Int
+  longitude  Int
+  createdAt  DateTime
+  device     Device   @relation(fields: [deviceId], references: [id])
+  order      Order?   @relation(fields: [orderId], references: [id])
 }

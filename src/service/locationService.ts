@@ -3,6 +3,8 @@ import { LocationDto } from '../dto/locationDto'
 
 const prisma = new PrismaClient();
 
+//TODO: add routine to get data from ThingsSpeak
+
 export class LocationService {
 
     async create(locationDto: LocationDto) {
@@ -22,7 +24,7 @@ export class LocationService {
     async findLastLocation(): Promise<Location | null> {
         const mostRecentLocation = await prisma.location.findFirst({
             orderBy: {
-                created_at: 'desc'
+                createdAt: 'desc'
             }
         })
         return mostRecentLocation;

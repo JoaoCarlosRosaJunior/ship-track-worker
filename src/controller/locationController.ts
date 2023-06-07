@@ -2,6 +2,9 @@ import { LocationService } from '../service/locationService';
 
 const LONGITUDE_RANGE = 360000000; // in microdegrees
 
+// TODO: add get locations by order
+// TODO: add get last location by order
+
 export class LocationController {
     private locationService: LocationService;
 
