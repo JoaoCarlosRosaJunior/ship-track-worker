@@ -16,9 +16,8 @@ export class LocationService {
 
         return locations.map(location => {
             return {
-                latitude: location.latitude,
-                longitude: location.longitude,
-                createdAt: location.createdAt
+                lat: location.latitude,
+                lng: location.longitude
             }
         });
     }
