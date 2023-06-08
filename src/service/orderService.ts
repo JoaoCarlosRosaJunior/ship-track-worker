@@ -24,4 +24,22 @@ export class OrderService {
 
         return deliveredOrder;
     };
+
+    async orderDeviceMap() {
+        const orders = await prisma.order.findMany({
+          where: { delivered: false },
+          select: { deviceId: true, id: true },
+        });
+
+        return orders;
+    }
+
+    async notDeliveredOrders() {
+        const orders = await prisma.order.findMany({
+            where: {delivered: false},
+            select: {id: true}
+        });
+
+        return orders.map(order => order.id);
+    }
 }

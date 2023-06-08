@@ -1,62 +1,36 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "mysql"
-//   url      = env("DATABASE_URL")
-// }
-
-
-// model Location {
-//   id        Int      @id @default(autoincrement())
-//   latitude  Float
-//   longitude Float
-//   created_at DateTime @default(now())
-//   deviceId  Int
-// }
-
-// Define the database connection details
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-// Define the `device` table
-model Device {
-  id         Int      @id @default(autoincrement())
-  available  Boolean
-  createdAt  DateTime @default(now())
-  orders     Order[]
-  locations  Location[]
+model device {
+  id        Int      @id
+  available Boolean
+  createdAt DateTime @default(now()) @db.Timestamp(0)
 }
 
-// Define the `order` table
-model Order {
-  id             String      @id
-  deviceId       Int
-  senderWallet   String
-  receiverWallet String
-  senderAddress  String
-  receiverAddress String
-  expectedTime   DateTime
-  delivered      Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  device         Device   @relation(fields: [deviceId], references: [id])
-  location       Location[]
+model location {
+  id        Int      @id
+  deviceId  Int
+  orderId   String?  @db.VarChar(255)
+  latitude  Int
+  longitude Int
+  createdAt DateTime @db.Timestamp(0)
 }
 
-// Define the `location` table
-model Location {
-  id         Int      @id
-  deviceId   Int
-  orderId    String
-  latitude   Int
-  longitude  Int
-  createdAt  DateTime
-  device     Device   @relation(fields: [deviceId], references: [id])
-  order      Order?   @relation(fields: [orderId], references: [id])
+model order {
+  id              String   @id @unique(map: "id") @db.VarChar(255)
+  deviceId        Int
+  senderWallet    String   @db.VarChar(255)
+  receiverWallet  String   @db.VarChar(255)
+  expectedTime    DateTime @db.Timestamp(0)
+  createdAt       DateTime @default(now()) @db.Timestamp(0)
+  senderAddress   String   @db.VarChar(255)
+  receiverAddress String   @db.VarChar(255)
+  delivered       Boolean? @default(false)
 }

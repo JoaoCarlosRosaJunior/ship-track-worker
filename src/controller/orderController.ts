@@ -15,7 +15,7 @@ export class OrderController {
         try {
             const device = await this.deviceService.getAvailable();
             if(!device) {
-                return "Device não disponível";
+                return "Device not available at the time";
             }
     
             const createOrderService = Object.assign(createOrderDto, {

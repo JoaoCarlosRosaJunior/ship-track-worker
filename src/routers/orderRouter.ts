@@ -6,6 +6,7 @@ const orderRouter = Router();
 
 const orderController = new OrderController();
 
+//debugar porque aqui não ta alocando o device certo e não ta marcando os devices com available = false;
 orderRouter.post('/order', async (req: Request, res: Response) => {
     try {
         const order = await orderController.createOrder({
@@ -14,14 +15,14 @@ orderRouter.post('/order', async (req: Request, res: Response) => {
             receiverWallet: req.body.receiverWallet,
             senderAddress: req.body.senderAddress,
             receiverAddress: req.body.receiverAddress,
-            expectedTime: req.body.expectedTime,
+            expectedTime: new Date(req.body.expectedTime),
         });
 
         res.status(201).json(order)
     } catch(error: any) {
         res.status(500).json({error: error.message});
     }
-})
+});
 
 
 orderRouter.patch('/order/:id',async (req: Request, res: Response) => {
@@ -32,6 +33,6 @@ orderRouter.patch('/order/:id',async (req: Request, res: Response) => {
     } catch(error: any) {
         res.status(500).json({error: error.message});
     }
-})
+});
 
 export default orderRouter;

@@ -8,9 +8,9 @@ export class DeviceController {
         this.deviceService = new DeviceService();
     }
 
-    async createDevice() {
+    async createDevice(id: number) {
         try {
-            const device = await this.deviceService.createDevice(true);
+            const device = await this.deviceService.createDevice(id, true);
             return device;
         } catch(error) {
             return error;
@@ -26,7 +26,12 @@ export class DeviceController {
         }
     }
 
-    async getDevices() {} // Return all devices
-
-    async getDevice() {} // Return device and last location of the device
+    async getAllDevices() {
+        try {
+            const devices = await this.deviceService.getAllDevices();
+            return devices;
+        } catch(error) {
+            return error;
+        }
+    }
 }

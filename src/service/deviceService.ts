@@ -1,4 +1,4 @@
-import { Device, PrismaClient } from '@prisma/client'
+import { device, PrismaClient } from '@prisma/client'
 import { UpdateDeviceDto } from '../dto/device.dto';
 
 const prisma = new PrismaClient();
@@ -6,9 +6,10 @@ const prisma = new PrismaClient();
 
 export class DeviceService {
 
-    async createDevice(available: boolean) {
+    async createDevice(id: number,available: boolean) {
         const device = await prisma.device.create({
             data: {
+                id,
                 available
             },
         });
@@ -37,5 +38,11 @@ export class DeviceService {
         })
 
         return availableDevice;
+    }
+
+    async getAllDevices() {
+        const devices = await prisma.device.findMany();
+
+        return devices;
     }
 }
