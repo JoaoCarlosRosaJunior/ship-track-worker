@@ -15,6 +15,8 @@ orderRouter.post('/order', async (req: Request, res: Response) => {
             receiverWallet: req.body.receiverWallet,
             senderAddress: req.body.senderAddress,
             receiverAddress: req.body.receiverAddress,
+            receiverAddrLat: Number(req.body.receiverAddrLat),
+            receiverAddrLng: Number(req.body.receiverAddrLng),
             expectedTime: new Date(req.body.expectedTime),
         });
 

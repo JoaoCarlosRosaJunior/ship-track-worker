@@ -4,6 +4,8 @@ export interface CreateOrderDto {
     receiverWallet: string;
     senderAddress: string;
     receiverAddress: string;
+    receiverAddrLat: number;
+    receiverAddrLng: number;
     expectedTime: Date;
 }
 

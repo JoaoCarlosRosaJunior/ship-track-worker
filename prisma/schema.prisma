@@ -33,4 +33,6 @@ model order {
   senderAddress   String   @db.VarChar(255)
   receiverAddress String   @db.VarChar(255)
   delivered       Boolean? @default(false)
+  receiverAddrLat Int?
+  receiverAddrLng Int?
 }

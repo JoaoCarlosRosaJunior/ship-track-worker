@@ -14,6 +14,7 @@ export class OrderController {
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
             const device = await this.deviceService.getAvailable();
+
             if(!device) {
                 return "Device not available at the time";
             }
@@ -23,6 +24,11 @@ export class OrderController {
             })
     
             const order = await this.orderService.create(createOrderService);
+
+            await this.deviceService.updateDevice({
+                id: device.id,
+                available: false
+            });
 
             return order;
         } catch(error) {
