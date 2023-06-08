@@ -37,9 +37,9 @@ export class OrderService {
     async notDeliveredOrders() {
         const orders = await prisma.order.findMany({
             where: {delivered: false},
-            select: {id: true}
+            select: {id: true, receiverAddrLat: true, receiverAddrLng: true}
         });
 
-        return orders.map(order => order.id);
+        return orders;
     }
 }

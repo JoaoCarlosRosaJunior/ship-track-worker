@@ -41,24 +41,6 @@ locationRouter.get('/locations/last/:id', async (req: Request, res: Response) =>
   }
 });
 
-/**
- * TODOD: change return change:
- * {
-"0xer-dfapdsfipj2-89034": {
-dstLat: 123,
-dstLng: 123,
-curLat: 123,
-curLng: 123,
-},
-"0xer-dfapdsfipj2-89034": {
-dstLat: 123,
-dstLng: 123,
-curLat: 123,
-curLng: 123,
-},
-}
- */
-
 locationRouter.get('/location/last', async (req: Request, res: Response) => {
   try {
     const lastLocations = await locationController.getLastLocations();

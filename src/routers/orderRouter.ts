@@ -6,7 +6,6 @@ const orderRouter = Router();
 
 const orderController = new OrderController();
 
-//debugar porque aqui não ta alocando o device certo e não ta marcando os devices com available = false;
 orderRouter.post('/order', async (req: Request, res: Response) => {
     try {
         const order = await orderController.createOrder({

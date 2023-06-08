@@ -123,20 +123,23 @@ export class LocationController {
 
     async getLastLocations() {
         try {
-            const notDeliveredOrdersId = await this.orderService.notDeliveredOrders();
+            const notDeliveredOrders = await this.orderService.notDeliveredOrders();
 
-            const lastLocations = await Promise.all(
-                notDeliveredOrdersId.map(async id => {
-                  const lastLocation = await this.locationService.findLastLocation(id);
-                  return {
-                    orderId: lastLocation?.orderId,
-                    latitude: lastLocation?.latitude,
-                    longitude: lastLocation?.longitude
-                  };
+            const lastLocationObject = {};
+
+            for (const order of notDeliveredOrders) {
+                const lastLocation = await this.locationService.findLastLocation(order.id);
+                Object.assign(lastLocationObject, {
+                  [order.id]: {
+                    dstLat: order.receiverAddrLat,
+                    dstLng: order.receiverAddrLng,
+                    curLat: lastLocation?.latitude,
+                    curLng: lastLocation?.longitude,
+                  }
                 })
-            );
+              }
 
-            return lastLocations;
+            return lastLocationObject;
         } catch(error) {
             return error;
         }
