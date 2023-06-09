@@ -25,8 +25,8 @@ export class LocationService {
 
         return locations.map(location => {
             return {
-                lat: location.latitude,
-                lng: location.longitude
+                lat: location.latitude / 1000000,
+                lng: location.longitude / 1000000
             }
         });
     }
