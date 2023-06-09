@@ -84,6 +84,25 @@ export class LocationController {
         }
     }
 
+    async getLastLocationsSerial() {
+        try {
+            const notDeliveredOrders = await this.orderService.notDeliveredOrders();
+
+            const lastLocationObject = {};
+
+            for (const order of notDeliveredOrders) {
+                const lastLocation = await this.locationService.findLastLocation(order.id);
+                Object.assign(lastLocationObject, {
+                    [order.id]: this.convertLatLngToInt256(lastLocation?.latitude as number, lastLocation?.longitude as number)
+                })
+              }
+
+            return lastLocationObject;
+        } catch(error) {
+            return error;
+        }
+    }
+
     convertLatLngToInt256(lat: number, lng: number ): number {
         const latInt = BigInt(lat) << BigInt(32);
         const lngInt = BigInt(lng + LONGITUDE_RANGE);

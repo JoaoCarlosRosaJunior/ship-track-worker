@@ -8,9 +8,9 @@ const locationRouter = Router();
 locationRouter.post('/locations', async (req: Request, res: Response) => {
   try {
     const createdLocation = await locationController.createLocation({
-      deviceId: req.body.deviceId,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude
+      deviceId: Number(req.body.deviceId),
+      latitude: Number(req.body.latitude),
+      longitude: Number(req.body.longitude)
     });
     res.status(201).json(createdLocation);
   } catch(error: any) {
@@ -42,6 +42,15 @@ locationRouter.get('/locations/last/:id', async (req: Request, res: Response) =>
 locationRouter.get('/location/last', async (req: Request, res: Response) => {
   try {
     const lastLocations = await locationController.getLastLocations();
+    res.status(200).json(lastLocations);
+  } catch(error: any) {
+    res.status(500).json({error: error.message});
+  }
+});
+
+locationRouter.get('/location/lastSerial', async (req: Request, res: Response) => {
+  try {
+    const lastLocations = await locationController.getLastLocationsSerial();
     res.status(200).json(lastLocations);
   } catch(error: any) {
     res.status(500).json({error: error.message});
