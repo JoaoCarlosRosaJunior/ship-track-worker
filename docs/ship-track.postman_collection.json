@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "e36c0d3c-c454-4f87-8826-2b5cf7aa4822",
+		"name": "ship-track",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15845879"
+	},
+	"item": [
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "Create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{hash-order}},\n    \"expectedTime\": {{expected-time}},\n    \"senderWallet\": {{sender-wallet}},\n    \"senderAddress\": {{sender-addr}},\n    \"receiverWallet\": {{receiver-wallet}},\n    \"receiverAddress\": {{receiver-addr}},\n    \"receiverAddrLat\": {{receiver-latitude}}, //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n    \"receiverAddrLng\": {{receiver-longitude}} //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ship-track.fly.dev/order",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order delivered",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://ship-track.fly.dev/order/:id",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"order",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{hash-order}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "location",
+			"item": [
+				{
+					"name": "Get locations by orderId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ship-track.fly.dev/locations/:orderId",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"locations",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{hash-order}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get last location by orderId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ship-track.fly.dev/locations/last/:orderId",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"locations",
+								"last",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "{{hash-order}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all last locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ship-track.fly.dev/location/last",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"location",
+								"last"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": {{deviceId}},\n    \"latitude\": {{latitude * 1000000}}, //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n    \"longitude\": {{longitude * 1000000}} //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ship-track.fly.dev/locations",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"locations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "device",
+			"item": [
+				{
+					"name": "Create Device",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{deviceId}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ship-track.fly.dev/device",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ship-track.fly.dev/device",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"device"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
