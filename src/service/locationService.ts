@@ -1,8 +1,17 @@
 import { location, PrismaClient } from '@prisma/client'
+import { CreateLocationServiceDto } from '../dto/loation.dto';
 
 const prisma = new PrismaClient();
 
 export class LocationService {
+
+    async createLocation(createLocationServiceDto: CreateLocationServiceDto) {
+        const location = await prisma.location.create({
+            data: createLocationServiceDto
+        })
+
+        return location;
+    }
 
     async find(orderId: string) {
         const locations = await prisma.location.findMany({

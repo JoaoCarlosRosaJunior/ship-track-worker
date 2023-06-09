@@ -11,3 +11,16 @@ export interface ThingSpeakDto {
     field3: string,
     created_at: string
 }
+
+export interface CreateLocationDto {
+    deviceId: number,
+    latitude: number,
+    longitude: number
+}
+
+export interface CreateLocationServiceDto {
+    deviceId: number,
+    orderId: string,
+    latitude: number,
+    longitude: number
+}

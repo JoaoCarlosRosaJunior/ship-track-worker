@@ -2,7 +2,7 @@ import { LocationService } from '../service/locationService';
 import { OrderService } from '../service/orderService';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { ThingSpeakDto } from '../dto/loation.dto'
+import { CreateLocationDto, ThingSpeakDto } from '../dto/loation.dto'
 
 dotenv.config();
 
@@ -22,6 +22,24 @@ export class LocationController {
     constructor() {
         this.locationService = new LocationService();
         this.orderService = new OrderService();
+    }
+
+    async createLocation(createLocationDto: CreateLocationDto) {
+
+        try{
+            const order = await this.orderService.getOrderByDevice(createLocationDto.deviceId);
+
+            if(!order) {
+                throw new Error('No orders from this locaton found, please contact support');
+            }
+
+            const data = Object.assign(createLocationDto, { 'orderId': order.id });
+            const location = await this.locationService.createLocation(data);
+    
+            return location;
+        } catch(error) {
+            return error;
+        }
     }
 
     async initializeThingSpeakRoutineConfig() {
@@ -67,7 +85,8 @@ export class LocationController {
             this.lastLocationEntryId += countSavedLocations;
         }
 
-        //APLICAR TIMEOUT AQUI
+        await this.delay(30);
+
         await this.thingSpeakRoutine();
     }
 
@@ -81,23 +100,27 @@ export class LocationController {
     }
 
     async getThingSpeakData(lastId: number) {
-        const missingData = await this.getLastEntries(lastId);
-        if(missingData != 0) {
-            const response = await axios.get(`${BASE_URL}/channels/2177175/feeds.json?api_key=${API_KEY}&results=${missingData}`);
-            const formatedData = response.data.feeds.map((location: ThingSpeakDto) => {
-                return {
-                    id: location.entry_id,
-                    latitude: Number(location.field1),
-                    longitude: Number(location.field2),
-                    deviceId: Number(location.field3),
-                    createdAt: new Date(location.created_at),
-                    orderId: this.orderDeviceMapping?.get(location.entry_id)
-                }
-            });
+        try{
+            const missingData = await this.getLastEntries(lastId);
+            if(missingData != 0) {
+                const response = await axios.get(`${BASE_URL}/channels/2177175/feeds.json?api_key=${API_KEY}&results=${missingData}`);
+                const formatedData = response.data.feeds.map((location: ThingSpeakDto) => {
+                    return {
+                        id: location.entry_id,
+                        latitude: Number(location.field1),
+                        longitude: Number(location.field2),
+                        deviceId: Number(location.field3),
+                        createdAt: new Date(location.created_at),
+                        orderId: this.orderDeviceMapping?.get(location.entry_id)
+                    }
+                });
 
-            return formatedData;
+                return formatedData;
+            }
+            return 0;
+        } catch(error) {
+            return error;
         }
-        return 0;
     }
 
     async getLocations(orderId: string) {
@@ -150,5 +173,9 @@ export class LocationController {
         const lngInt = BigInt(lng + LONGITUDE_RANGE);
         const latLngInt = latInt | lngInt;
         return Number(latLngInt);
+    }
+
+    delay(seg: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, seg * 1000));
     }
 }
