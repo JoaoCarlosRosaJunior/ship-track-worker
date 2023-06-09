@@ -1,14 +1,13 @@
-version: '3.8'
+version: '3'
 services:
-  postgres:
-    image: postgres:10.3
+  db:
+    image: mysql:8.0
     restart: always
     environment:
-      - POSTGRES_USER=sammy
-      - POSTGRES_PASSWORD=your_password
-    volumes:
-      - postgres:/var/lib/postgresql/data
+      DATABASE_URL: jdbc:mysql://localhost:3306/mydatabase?user=myuser&password=mypassword
     ports:
-      - '5432:5432'
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
 volumes:
-  postgres:
+  dbdata:

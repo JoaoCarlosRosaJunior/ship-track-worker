@@ -15,9 +15,6 @@ const BASE_URL = process.env.BASE_URL;
 export class LocationController {
     private locationService: LocationService;
     private orderService: OrderService
-    private orderDeviceMapping: Map<number, string> | undefined;
-    public routine: boolean | undefined;
-    private lastLocationEntryId: number | undefined;
 
     constructor() {
         this.locationService = new LocationService();
@@ -37,87 +34,6 @@ export class LocationController {
             const location = await this.locationService.createLocation(data);
     
             return location;
-        } catch(error) {
-            return error;
-        }
-    }
-
-    async initializeThingSpeakRoutineConfig() {
-
-        try {
-            const orderDeviceMap = await this.orderService.orderDeviceMap();
-            this.orderDeviceMapping = this.transformOrdersToMap(orderDeviceMap);
-            this.routine = true;
-            const lastLocationEntry = await this.locationService.findLastId();
-            this.lastLocationEntryId = lastLocationEntry?.id;
-            return true;
-        } catch(error) {
-            return error;
-        }
-    }
-
-    transformOrdersToMap(orders: { deviceId: number; id: string }[]): Map<number, string> {
-        const orderDeviceMap = new Map<number, string>();
-        orders.forEach((order) => {
-          orderDeviceMap.set(order.deviceId, order.id);
-        });
-        return orderDeviceMap;
-    }
-
-    starThingSpeakRoutine() {
-        this.thingSpeakRoutine();
-    }
-
-    async thingSpeakRoutine() {
-        if(!this.routine) {
-            return ;
-        }
-
-        if(!this.lastLocationEntryId) {
-            throw new Error('Unknown error, please contact suport');
-        }
-
-        const locationsToSave = await this.getThingSpeakData(this.lastLocationEntryId);
-
-        if(locationsToSave != 0) {
-            const countSavedLocations = await this.locationService.createManyLocations(locationsToSave);
-
-            this.lastLocationEntryId += countSavedLocations;
-        }
-
-        await this.delay(30);
-
-        await this.thingSpeakRoutine();
-    }
-
-    async getLastEntries(lastId: number) {
-        try {
-          const response = await axios.get(`${BASE_URL}/channels/2177175/feeds.json?api_key=${API_KEY}&results=1`);
-          return response.data.channel.last_entry_id - lastId;
-        } catch(error) {
-          return error;
-        }
-    }
-
-    async getThingSpeakData(lastId: number) {
-        try{
-            const missingData = await this.getLastEntries(lastId);
-            if(missingData != 0) {
-                const response = await axios.get(`${BASE_URL}/channels/2177175/feeds.json?api_key=${API_KEY}&results=${missingData}`);
-                const formatedData = response.data.feeds.map((location: ThingSpeakDto) => {
-                    return {
-                        id: location.entry_id,
-                        latitude: Number(location.field1),
-                        longitude: Number(location.field2),
-                        deviceId: Number(location.field3),
-                        createdAt: new Date(location.created_at),
-                        orderId: this.orderDeviceMapping?.get(location.entry_id)
-                    }
-                });
-
-                return formatedData;
-            }
-            return 0;
         } catch(error) {
             return error;
         }

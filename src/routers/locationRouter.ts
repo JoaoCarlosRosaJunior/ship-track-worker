@@ -28,21 +28,6 @@ locationRouter.get('/locations/:id', async (req: Request, res: Response) => {
     res.status(500).json({error: error.message});
   }
 });
-
-locationRouter.post('/locations/start', async (req: Request, res: Response) => {
-  try {
-    await locationController.initializeThingSpeakRoutineConfig();
-    locationController.starThingSpeakRoutine();
-    res.status(200).json({message: "Routine started"});
-  } catch(error: any) {
-    res.status(500).json({error: error.message});
-  }
-});
-
-locationRouter.post('/locations/stop', async (req: Request, res: Response) => {
-  locationController.routine = false;
-  res.status(500).json({message: "Routine stoped"});
-})
   
 locationRouter.get('/locations/last/:id', async (req: Request, res: Response) => {
   const id = req.params.id
