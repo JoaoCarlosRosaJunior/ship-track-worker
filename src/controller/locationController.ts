@@ -51,8 +51,15 @@ export class LocationController {
     async getLastLocationById(id: string) {
         try {
             const lastLocation = await this.locationService.findLastLocation(id);
-            const lat = lastLocation?.latitude;
-            const lng = lastLocation?.longitude;
+            let lat, lng;
+            if(!lastLocation) {
+                const order = await this.orderService.getOrderById(id)
+                lat = order?.senderAddrLat;
+                lng = order?.senderAddrLng;
+            } else {
+                lat = lastLocation.latitude;
+                lng = lastLocation.longitude;
+            }
             const binLocation = this.convertLatLngToInt256(lat as number, lng as number);
             return binLocation;
         } catch(error) {
@@ -68,12 +75,24 @@ export class LocationController {
 
             for (const order of notDeliveredOrders) {
                 const lastLocation = await this.locationService.findLastLocation(order.id);
+                if(!lastLocation) {
+                    Object.assign(lastLocationObject, {
+                        [order.id]: {
+                          dstLat: order.receiverAddrLat,
+                          dstLng: order.receiverAddrLng,
+                          srcLat: order.senderAddrLat,
+                          srcLng: order.senderAddrLng,
+                        }
+                      })
+                }
                 Object.assign(lastLocationObject, {
                   [order.id]: {
                     dstLat: order.receiverAddrLat,
                     dstLng: order.receiverAddrLng,
                     curLat: lastLocation?.latitude,
                     curLng: lastLocation?.longitude,
+                    srcLat: order.senderAddrLat,
+                    srcLng: order.senderAddrLng,
                   }
                 })
               }
@@ -105,7 +124,7 @@ export class LocationController {
                     [order.id]: this.convertLatLngToInt256(lat as number, lng as number)
                 })
             }
-            
+
             return lastLocationObject;
         } catch(error) {
             return error;

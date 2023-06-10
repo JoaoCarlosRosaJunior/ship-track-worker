@@ -4,6 +4,22 @@ import { CreateOrderServiceDto } from "../dto/order.dto";
 const prisma = new PrismaClient();
 
 export class OrderService {
+
+    async getOrderById(id: string) {
+        const order = await prisma.order.findFirst({
+            where: {
+                id
+            },
+            select: {
+                id: true,
+                senderAddrLat: true,
+                senderAddrLng: true
+            }
+        });
+
+        return order;
+    }
+
     async getOrderByDevice(deviceId: number) {
         const order = await prisma.order.findFirst({
             where: {
