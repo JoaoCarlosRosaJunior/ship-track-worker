@@ -22,7 +22,7 @@ Our routes are listed on the [Postman Collection](./docs)
 
 ## Running Locally
 
-1. Clone o projeto
+1. Clone the project
 
 ```bash
   git clone https://github.com/JoaoCarlosRosaJunior/ship-track-worker
