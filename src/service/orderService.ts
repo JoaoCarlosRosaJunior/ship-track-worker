@@ -48,7 +48,13 @@ export class OrderService {
     async notDeliveredOrders() {
         const orders = await prisma.order.findMany({
             where: {delivered: false},
-            select: {id: true, receiverAddrLat: true, receiverAddrLng: true}
+            select: {
+                id: true, 
+                receiverAddrLat: true,
+                receiverAddrLng: true,
+                senderAddrLat: true,
+                senderAddrLng: true
+            }
         });
 
         return orders;

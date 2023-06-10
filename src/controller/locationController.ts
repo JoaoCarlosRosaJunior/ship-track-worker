@@ -90,13 +90,22 @@ export class LocationController {
 
             const lastLocationObject = {};
 
+            let lat, lng;
+
             for (const order of notDeliveredOrders) {
                 const lastLocation = await this.locationService.findLastLocation(order.id);
+                if(!lastLocation) {
+                    lat = order.senderAddrLat;
+                    lng = order.senderAddrLng;
+                } else {
+                    lat = lastLocation.latitude;
+                    lng = lastLocation.longitude;
+                }
                 Object.assign(lastLocationObject, {
-                    [order.id]: this.convertLatLngToInt256(lastLocation?.latitude as number, lastLocation?.longitude as number)
+                    [order.id]: this.convertLatLngToInt256(lat as number, lng as number)
                 })
-              }
-
+            }
+            
             return lastLocationObject;
         } catch(error) {
             return error;
@@ -108,9 +117,5 @@ export class LocationController {
         const lngInt = BigInt(lng + LONGITUDE_RANGE);
         const latLngInt = latInt | lngInt;
         return Number(latLngInt);
-    }
-
-    delay(seg: number): Promise<void> {
-        return new Promise(resolve => setTimeout(resolve, seg * 1000));
     }
 }

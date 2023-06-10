@@ -35,4 +35,6 @@ model order {
   delivered       Boolean? @default(false)
   receiverAddrLat Int?
   receiverAddrLng Int?
+  senderAddrLat   Int?     @default(-22951804)
+  senderAddrLng   Int?     @default(-43210760)
 }
