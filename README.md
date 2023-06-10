@@ -34,26 +34,16 @@ Our routes are listed on the [Postman Collection](./docs)
   npm install
 ```
 
-3. Running database Locally
-3.1. Rename the [.env.local](.env.local) to *.env*
-
-3.2. Define your MySql variables on the *.env* file
-
-3.3. Run the docker-compose
+3. Run the docker-compose
 
 ```bash
-  docker-compose up
+  docker-compose up -d
 ```
-For more references on [docker-compose up -d](https://docs.docker.com/engine/reference/commandline/compose_up/)
+For more references on [docker compose up -d](https://docs.docker.com/engine/reference/commandline/compose_up/)
 
-4. Run prisma
+4. Run prisma migrate on the docker container
 ```bash
-  npx prisma generate
+  docker-compose exec app npx prisma migrate dev --name init
 ```
-
-5. Run the project
-```bash
-  npm run dev
-```
-
+5. Acess the application on [localhost](http://localhost:3000)
 
