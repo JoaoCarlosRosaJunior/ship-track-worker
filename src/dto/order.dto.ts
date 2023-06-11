@@ -6,6 +6,8 @@ export interface CreateOrderDto {
     receiverAddress: string;
     receiverAddrLat: number;
     receiverAddrLng: number;
+    senderAddrLat: number;
+    senderAddrLng: number;
     expectedTime: Date;
 }
 
@@ -16,5 +18,9 @@ export interface CreateOrderServiceDto {
     receiverWallet: string;
     senderAddress: string;
     receiverAddress: string;
+    receiverAddrLat: number;
+    receiverAddrLng: number;
+    senderAddrLat: number;
+    senderAddrLng: number;
     expectedTime: Date;
 }

@@ -17,6 +17,8 @@ orderRouter.post('/order', async (req: Request, res: Response) => {
             receiverAddrLat: Number(req.body.receiverAddrLat),
             receiverAddrLng: Number(req.body.receiverAddrLng),
             expectedTime: new Date(req.body.expectedTime),
+            senderAddrLat: Number(req.body.receiverAddrLat),
+            senderAddrLng: Number(req.body.receiverAddrLng),
         });
 
         res.status(201).json(order)

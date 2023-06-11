@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, order } from "@prisma/client";
 import { CreateOrderServiceDto } from "../dto/order.dto";
 
 const prisma = new PrismaClient();
@@ -13,7 +13,9 @@ export class OrderService {
             select: {
                 id: true,
                 senderAddrLat: true,
-                senderAddrLng: true
+                senderAddrLng: true,
+                receiverAddrLat: true,
+                receiverAddrLng: true
             }
         });
 

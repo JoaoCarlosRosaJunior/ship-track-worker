@@ -3,6 +3,7 @@ import { OrderService } from '../service/orderService';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { CreateLocationDto, ThingSpeakDto } from '../dto/loation.dto'
+import { location } from '@prisma/client';
 
 dotenv.config();
 
@@ -40,8 +41,26 @@ export class LocationController {
     }
 
     async getLocations(orderId: string) {
+        let locations: any[];
         try {
-            const locations = await this.locationService.find(orderId);
+            locations = await this.locationService.find(orderId);
+            if(locations.length == 0) {
+                const order = await this.orderService.getOrderById(orderId);
+                if(!order) {
+                    locations = []
+                } else {
+                    locations = [
+                        {
+                            lat: order.senderAddrLat / 1000000,
+                            lng: order.senderAddrLng / 1000000
+                        },
+                        {
+                            lat: order.receiverAddrLat / 1000000,
+                            lng: order.receiverAddrLng / 1000000
+                        }
+                    ]
+                }
+            }
             return locations;
         } catch (error: any) {
             return error.message;
