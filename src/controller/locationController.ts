@@ -150,10 +150,10 @@ export class LocationController {
         }
     }
 
-    convertLatLngToInt256(lat: number, lng: number ): number {
+    convertLatLngToInt256(lat: number, lng: number ) {
         const latInt = BigInt(lat) << BigInt(32);
         const lngInt = BigInt(lng + LONGITUDE_RANGE);
         const latLngInt = latInt | lngInt;
-        return Number(latLngInt);
+        return latLngInt.toString();
     }
 }
