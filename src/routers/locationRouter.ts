@@ -5,6 +5,19 @@ const locationController = new LocationController();
 
 const locationRouter = Router();
 
+locationRouter.post('/locations/test', async (req: Request, res: Response) => {
+  try {
+    const createdLocationTest = await locationController.createTestLocation({
+      orderId: req.body.orderId,
+      latitude: Number(req.body.latitude),
+      longitude: Number(req.body.longitude)
+    });
+    res.status(201).json(createdLocationTest);
+  } catch(error: any) {
+    res.status(500).json({error: error.message});
+  }
+})
+
 locationRouter.post('/locations', async (req: Request, res: Response) => {
   try {
     const createdLocation = await locationController.createLocation({

@@ -2,16 +2,12 @@ import { LocationService } from '../service/locationService';
 import { OrderService } from '../service/orderService';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { CreateLocationDto, ThingSpeakDto } from '../dto/loation.dto'
+import { CreateLocationDto, CreateTestLocationDto, ThingSpeakDto } from '../dto/loation.dto'
 import { location } from '@prisma/client';
 
 dotenv.config();
 
 const LONGITUDE_RANGE = 360000000;
-
-const API_KEY = process.env.API_KEY;
-
-const BASE_URL = process.env.BASE_URL;
 
 export class LocationController {
     private locationService: LocationService;
@@ -20,6 +16,23 @@ export class LocationController {
     constructor() {
         this.locationService = new LocationService();
         this.orderService = new OrderService();
+    }
+
+    async createTestLocation(createTestLocation: CreateTestLocationDto) {
+        try{
+            const order = await this.orderService.getOrderById(createTestLocation.orderId);
+
+            if(!order) {
+                throw new Error('No orders from this locaton found, please contact support');
+            }
+
+            const data = Object.assign(createTestLocation, { 'deviceId': order.deviceId });
+            const location = await this.locationService.createLocation(data);
+    
+            return location;
+        } catch(error) {
+            return error;
+        }
     }
 
     async createLocation(createLocationDto: CreateLocationDto) {

@@ -24,3 +24,9 @@ export interface CreateLocationServiceDto {
     latitude: number,
     longitude: number
 }
+
+export interface CreateTestLocationDto {
+    orderId: string,
+    latitude: number,
+    longitude: number
+}

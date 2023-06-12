@@ -12,6 +12,7 @@ export class OrderService {
             },
             select: {
                 id: true,
+                deviceId: true,
                 senderAddrLat: true,
                 senderAddrLng: true,
                 receiverAddrLat: true,
