@@ -118,7 +118,7 @@
 							"variable": [
 								{
 									"key": "orderId",
-									"value": "{{hash-order}}"
+									"value": "{{orderId}}"
 								}
 							]
 						}
@@ -153,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"deviceId\": {{deviceId}},\n    \"latitude\": {{latitude * 1000000}}, //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n    \"longitude\": {{longitude * 1000000}} //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n}",
+							"raw": "{\n    \"deviceId\": 1,\n    \"latitude\": -23466090, //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n    \"longitude\": -46923180 //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,6 +170,57 @@
 							],
 							"path": [
 								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get al last locations Serial",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ship-track.fly.dev/location/lastSerial",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"location",
+								"lastSerial"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create test location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderId\": {{oderId}},\n    \"latitude\": {{latitude * 1000000}}, //Needs to be multiplied by 1.000.000, Has to be 8 hole digitis\n    \"longitude\": {{longitude * 1000000}} \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ship-track.fly.dev/locations/test",
+							"protocol": "https",
+							"host": [
+								"ship-track",
+								"fly",
+								"dev"
+							],
+							"path": [
+								"locations",
+								"test"
 							]
 						}
 					},
